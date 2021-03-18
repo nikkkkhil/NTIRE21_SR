@@ -98,14 +98,15 @@ scale = int(scale)
 # Get Paths
 ########################################
 
-gt_imgs_raw = fiFindByWildcard(os.path.join(gt_dir, '*.png'))
-srs_imgs_raw = fiFindByWildcard(os.path.join(srs_dir, '*.png'))
+gt_imgs_raw = fiFindByWildcard(os.path.join(gt_dir, '*_TARGET.png'))
+srs_imgs_raw = fiFindByWildcard(os.path.join(srs_dir, '*_EDSR.png'))
+
 
 gt_imgs = []
 srs_imgs = []
 
-for img_idx in range(100):
-    gt = os.path.expanduser(os.path.join(gt_dir, f'0{801 + img_idx:03d}.png'))
+for img_idx in range(n_samples):
+    gt = os.path.expanduser(os.path.join(gt_dir, gt_imgs_raw[img_idx]))
     if gt in gt_imgs_raw:
         gt_imgs.append(gt)
     else:
@@ -114,7 +115,7 @@ for img_idx in range(100):
     if n_samples > 1:
         srs_imgs.append([])
         for i in range(n_samples):
-            sr = os.path.join(srs_dir, f'{img_idx:06d}_sample{i:05d}.png')
+            sr = os.path.join(srs_dir, srs_imgs_raw[img_idx])
             if sr in srs_imgs_raw:
                 srs_imgs[-1].append(sr)
             else:

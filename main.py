@@ -10,9 +10,9 @@ import torch.nn as nn
 
 from div2k import get_div2k_loader
 from models_cnn import EDSR, RDN
-from models_gan import SRGAN, ESRGAN, Discriminator
+from models_gan import  Discriminator
 from train_cnn import train_srcnns
-from train_gan import train_srgans
+# from train_gan import train_srgans
 from utils import make_dirs, inference
 from generate import generate_all
 
@@ -65,36 +65,7 @@ def main(args):
             scale_factor=args.upscale_factor
             ).to(device)
 
-    elif args.model == 'rdn':
-
-        rdn = RDN(
-            channels=args.channels, 
-            features=args.dim, 
-            dim=args.dim, 
-            num_denses=args.num_blocks, 
-            num_layers=args.num_layers, 
-            scale_factor=args.upscale_factor
-            ).to(device)
-
-    elif args.model == 'srgan':
-
-        srgan = SRGAN(
-            channels=args.channels, 
-            ngf=args.dim, 
-            scale_factor=args.upscale_factor
-            ).to(device)
-
-    elif args.model == 'esrgan':
-
-        esrgan = ESRGAN(
-            channels=args.channels, 
-            ngf=args.dim, 
-            num_denses=args.num_denses, 
-            growth_rate=args.growth_rate, 
-            scale_ration=args.scale_ration, 
-            scale_factor=args.upscale_factor
-            ).to(device)
-        
+    
     else:
         raise NotImplementedError
 
@@ -110,14 +81,7 @@ def main(args):
         if args.model == 'edsr':
             train_srcnns(train_div2k_loader, val_div2k_loader, edsr, device, args)
 
-        elif args.model == 'rdn':
-            train_srcnns(train_div2k_loader, val_div2k_loader, rdn, device, args)
-
-        elif args.model == 'srgan':
-            train_srgans(train_div2k_loader, val_div2k_loader, srgan, D, device, args)
-
-        elif args.model == 'esrgan':
-            train_srgans(train_div2k_loader, val_div2k_loader, esrgan, D, device, args)
+       
 
     elif args.phase == 'inference':
 
@@ -126,20 +90,6 @@ def main(args):
             edsr.load_state_dict(torch.load(edsr_weight_path))
             inference(val_div2k_loader, edsr, args.upscale_factor, args.num_epochs, args.inference_path, device, save_combined=False)
 
-        elif args.model == 'rdn':
-            rdn_weight_path = os.path.join(args.weights_path, '{}_Epoch_{}.pkl'.format(rdn.__class__.__name__, args.num_epochs))
-            rdn.load_state_dict(torch.load(rdn_weight_path))
-            inference(val_div2k_loader, rdn, args.upscale_factor, args.num_epochs, args.inference_path, device, save_combined=False)
-
-        elif args.model == 'srgan':
-            srgan_weight_path = os.path.join(args.weights_path, '{}_Epoch_{}.pkl'.format(srgan.__class__.__name__, args.num_epochs))
-            srgan.load_state_dict(torch.load(srgan_weight_path))
-            inference(val_div2k_loader, srgan, args.upscale_factor, args.num_epochs, args.inference_path, device, save_combined=False)
-
-        elif args.model == 'esrgan':
-            esrgan_weight_path = os.path.join(args.weights_path, '{}_Epoch_{}.pkl'.format(esrgan.__class__.__name__, args.num_epochs))
-            esrgan.load_state_dict(torch.load(esrgan_weight_path))
-            inference(val_div2k_loader, esrgan, args.upscale_factor, args.num_epochs, args.inference_path, device, save_combined=False)
 
     elif args.phase == 'generate':
         generate_all(val_div2k_loader, device, args)

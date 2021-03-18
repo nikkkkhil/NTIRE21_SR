@@ -34,29 +34,7 @@ def generate_all(data_loader, device, args):
         scale_factor=args.upscale_factor
         ).to(device)
 
-    rdn = RDN(
-        channels=args.channels, 
-        features=args.dim, 
-        dim=args.dim, 
-        num_denses=args.num_blocks, 
-        num_layers=args.num_layers, 
-        scale_factor=args.upscale_factor
-        ).to(device)
-
-    srgan = SRGAN(
-        channels=args.channels, 
-        ngf=args.dim, 
-        scale_factor=args.upscale_factor
-        ).to(device)
-
-    esrgan = ESRGAN(
-        channels=args.channels, 
-        ngf=args.dim, 
-        num_denses=args.num_denses, 
-        growth_rate=args.growth_rate, 
-        scale_ration=args.scale_ration, 
-        scale_factor=args.upscale_factor
-        ).to(device)
+   
 
     # Weight Paths #
     edsr_weight_path = os.path.join(args.weights_path, '{}_Epoch_{}.pkl'.format(edsr.__class__.__name__, args.num_epochs))

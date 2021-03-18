@@ -72,9 +72,6 @@ def sample_images(data_loader, batch_size, scale_factor, model, epoch, path, dev
     """Save Sample Images for Every Epoch"""
 
     high, low = next(iter(data_loader))
-    print('high',high)
-    print('low',low)
-
     high = high.to(device)
     low = low.to(device)
 
