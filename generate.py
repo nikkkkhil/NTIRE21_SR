@@ -11,7 +11,7 @@ from torchvision.utils import save_image
 
 from div2k import get_div2k_loader
 from models_cnn import EDSR, RDN
-from models_gan import SRGAN, ESRGAN, Discriminator
+from models_gan import  Discriminator
 from utils import make_dirs, denorm
 
 # Reproducibility #
