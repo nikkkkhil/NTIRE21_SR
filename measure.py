@@ -98,8 +98,8 @@ scale = int(scale)
 # Get Paths
 ########################################
 
-gt_imgs_raw = fiFindByWildcard(os.path.join(gt_dir, '*_TARGET.png'))
-srs_imgs_raw = fiFindByWildcard(os.path.join(srs_dir, '*_EDSR.png'))
+gt_imgs_raw = fiFindByWildcard(os.path.join(gt_dir, '*.png'))
+srs_imgs_raw = fiFindByWildcard(os.path.join(srs_dir, '*.png'))
 
 
 gt_imgs = []
